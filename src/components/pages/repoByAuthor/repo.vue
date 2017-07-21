@@ -43,6 +43,8 @@ export default {
     border: 1px solid #ddd;
     border-radius: 0.2em;
     line-height: 1.5em;
+    max-width: 420px;
+    width: 100%;
   }
 
   .repo:hover {
