@@ -22,7 +22,7 @@ export default {
 .branches {
   display: inline-flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   padding: 1em;
 }

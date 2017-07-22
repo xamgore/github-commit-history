@@ -4,7 +4,7 @@
     <branches v-if="branches.length" :branches="branches" :selected="branch"/>
 
     <div class="history">
-      
+      <commit v-for="cm in commits" :key="cm.sha" :cm="cm" class="commit"/>
     </div>
 
   </div>
@@ -12,10 +12,11 @@
 
 <script>
 import branches from './branches';
+import commit from './commit';
 
 export default {
   name: 'repo-page',
-  components: { branches },
+  components: { branches, commit },
   props: ['author', 'repo', 'branch'],
   asyncComputed: {
     branches: {
@@ -29,8 +30,8 @@ export default {
     commits: {
       default: [],
       get() {
-        return this.axios.get(`https://api.github.com/repos/${this.author}/${this.repo}/commits`)
-          .then(res => res.data);
+        return this.axios.get(`https://api.github.com/repos/${this.author}/${this.repo}/commits?sha=${this.branch}`)
+          .then((res) => { console.log(res.data); return res.data; });
       },
     },
   },
@@ -51,8 +52,19 @@ export default {
   flex-direction: row;
 }
 
-.branches {
+.page__repository .branches {
   border-right: 2px solid lightgray;
+  margin-right: 1em;
+  padding-right: 2.5em;
+  font-size: 0.75em;
+}
+
+.history {
+  /*margin-left: 1em;*/
+}
+
+.commit {
+  /*margin: 0.5em 0;*/
 }
 
 </style>
