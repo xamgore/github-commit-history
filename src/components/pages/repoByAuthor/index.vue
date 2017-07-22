@@ -2,7 +2,7 @@
   <div class="page page__by-author">
 
     <input type="text" class="search-author" placeholder="nickname"
-      @input="setAuthor" :value="nickname" autofocus>
+       @input="setAuthor" :value="author" autofocus>
     <repositories :repos="repos" :err="error"/>
 
     <infinite-loading v-show="author" :on-infinite="fetchMoreRepos" ref="infiniteLoading" :distance="400">
@@ -21,30 +21,33 @@ import repositories from './repositories';
 export default {
   name: 'page-by-author',
   components: { repositories, infiniteLoading },
-  props: ['nickname'],
+  props: ['author'],
   data: () => ({
     error: '',
-    author: '',
     page: 0,
     repos: null,
   }),
-  methods: {
-    setAuthor: debounce(function (e) {
-      this.author = e.target.value.trim();
-      this.$router.push({ name: 'byAuthor', params: { nickname: this.author } });
-
-      // fetchMoreRepos will be called automatically
+  watch: {
+    author() {
       this.page = 0;
       this.repos = null;
+
+      // calls fetchMoreRepos
       this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+    },
+  },
+  methods: {
+    setAuthor: debounce(function (e) {
+      this.$router.push({ name: 'byAuthor', params: { author: e.target.value } });
     }, 500),
+
     fetchMoreRepos: debounce(function () {
       this.error = '';
 
       if (!this.author.length) return;
 
       this.page += 1;
-      const author = encodeURI(this.author);
+      const author = encodeURI(this.author.trim());
       const clientId = 'client_id=07e0ab8ddd5a2a83cc80';
       const clientSecret = 'client_secret=c78ac83e552cf858af63a8c8cde812a2a778fd7e';
       const url = `https://api.github.com/users/${author}/repos?page=${this.page}&sort=pushed&${clientId}&${clientSecret}`;

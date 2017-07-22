@@ -6,6 +6,6 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
-    { path: '/:nickname?', name: 'byAuthor', props: true, component: repoByAuthor },
+    { path: '/:author?', name: 'byAuthor', props: true, component: repoByAuthor },
   ],
 });
