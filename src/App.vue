@@ -19,4 +19,8 @@ export default {
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
   }
+
+  @media screen and (max-width: 460px) {
+    body { font-size: 0.7em; }
+  }
 </style>

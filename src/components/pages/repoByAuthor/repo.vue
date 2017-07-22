@@ -36,7 +36,7 @@ export default {
   props: ['rep', 'colors'],
   computed: {
     color() {
-      return this.colors[this.rep.language].color;
+      return (this.colors[this.rep.language] || {}).color;
     },
   },
   methods: {

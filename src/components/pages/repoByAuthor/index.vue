@@ -6,7 +6,7 @@
 
     <repositories :repos="repos" :err="error"/>
 
-    <infinite-loading v-show="author" :on-infinite="fetchMoreRepos" ref="infiniteLoading">
+    <infinite-loading v-show="author" :on-infinite="fetchMoreRepos" ref="infiniteLoading" :distance="400">
       <span slot="no-more"/>
       <span slot="no-results"/>
     </infinite-loading>
@@ -39,6 +39,7 @@ export default {
     }, 500),
     fetchMoreRepos: debounce(function () {
       this.error = '';
+
       if (!this.author.length) return;
 
       this.page += 1;
@@ -58,7 +59,7 @@ export default {
             ? 'User is not found' : 'Cannot connect to server';
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
         });
-    }, 1000, true),
+    }, 100, true),
   },
 };
 </script>

@@ -1,15 +1,13 @@
 <template>
-  <div>
+  <div class="repositories">
 
-    <div v-if="message">
+    <div v-if="message" class="repositories__message">
       {{ message }}
     </div>
 
-    <div v-else class="repositories">
+    <div v-else class="repositories__container">
       <repo v-for="rep in repos" :rep="rep" :key="rep.id" :colors="colors"/>
     </div>
-
-    <!-- TODO: pagination -->
 
   </div>
 </template>
@@ -51,13 +49,17 @@ export default {
     margin-bottom: 1em;
   }
 
-  .repositories {
+  .repositories__container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     padding-left: 1em;
     padding-bottom: 2em;
+  }
+
+  .repositories__message {
+    text-align: center;
   }
 
   @media screen and (max-width:420px) {
