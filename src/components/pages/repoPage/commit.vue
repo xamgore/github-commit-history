@@ -14,8 +14,6 @@
 
       <div class="commit__meta">
         <span class="commit__author" v-text="cm.author.login" :title="view"/>
-        commited
-        <span class="commite__date" :title="cm.commit.author.date" v-text="ago"/>
       </div>
     </div>
 
@@ -35,29 +33,6 @@ export default {
     },
     view() {
       return `View all commits by ${this.cm.commit.author.name}`;
-    },
-    date() {
-      return new Date(this.cm.commit.author.date);
-    },
-    diffTime() {
-      return (new Date() - this.date) / (24 * 3600 * 1000);
-    },
-    ago() {
-      let phraze;
-
-      if (this.diffTime < 7) {
-        phraze = `${Math.floor(this.diffTime)} days ago`;
-      } else {
-        const opt = { day: 'numeric', month: 'short' };
-
-        if (this.diffTime > 365) {
-          opt.year = 'numeric';
-        }
-
-        phraze = `on ${this.date.toLocaleDateString('en-US', opt)}`;
-      }
-
-      return phraze;
     },
   },
 };
