@@ -62,6 +62,10 @@ export default {
     cursor: pointer;
   }
 
+  .repo:active {
+    user-select: none;
+  }
+
   .repo__name {
     font-family: 'Roboto Mono', monospace;
     font-weight: 500;

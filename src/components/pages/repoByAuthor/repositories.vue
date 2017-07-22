@@ -42,6 +42,11 @@ export default {
 </script>
 
 <style>
+  .repo {
+    margin-right: 1em;
+    box-sizing: content-box;
+  }
+
   .repo:not(:last-child) {
     margin-bottom: 1em;
   }
@@ -52,11 +57,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     padding-left: 1em;
-  }
-
-  .repo {
-    margin-right: 1em;
-    box-sizing: content-box;
+    padding-bottom: 2em;
   }
 
   @media screen and (max-width:420px) {
