@@ -13,7 +13,8 @@
       </div>
 
       <div class="commit__meta">
-        <span class="commit__author" v-text="cm.author.login" :title="view"/>
+        <router-link v-text="cm.author.login" :title="view" class="commit__author"
+          :to="{ query: { author: cm.author.login } }"/>
       </div>
     </div>
 
@@ -93,6 +94,8 @@ export default {
 
 .commit__author {
   font-weight: 600;
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .commit__author:hover {

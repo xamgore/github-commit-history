@@ -47,7 +47,9 @@ export default {
     commits: {
       default: [],
       get() {
-        return this.axios.get(`https://api.github.com/repos/${this.author}/${this.repo}/commits?sha=${this.branch}&client_id=07e0ab8ddd5a2a83cc80&client_secret=c78ac83e552cf858af63a8c8cde812a2a778fd7e`)
+        const filter = Object.entries(this.$route.query).map(([k, v]) => `&${k}=${v}`).join('');
+
+        return this.axios.get(`https://api.github.com/repos/${this.author}/${this.repo}/commits?sha=${this.branch}&client_id=07e0ab8ddd5a2a83cc80&client_secret=c78ac83e552cf858af63a8c8cde812a2a778fd7e${filter}`)
           .then((res) => { console.log(res.data); return res.data; });
       },
     },
