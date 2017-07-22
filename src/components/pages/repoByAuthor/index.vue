@@ -30,7 +30,7 @@ export default {
   }),
   methods: {
     setAuthor: debounce(function (e) {
-      this.author = e.target.value;
+      this.author = e.target.value.trim();
 
       // fetchMoreRepos will be called automatically
       this.page = 0;
