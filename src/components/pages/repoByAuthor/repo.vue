@@ -9,9 +9,9 @@
           ⭐{{ rep.stargazers_count }}
         </span>
 
-        <span v-if="rep.watchers_count" class="repo__watchers">
+        <!-- <span v-if="rep.watchers_count" class="repo__watchers">
           👀{{ rep.watchers_count }}
-        </span>
+        </span> -->
       </span>
     </div>
 
@@ -20,8 +20,11 @@
       {{ rep.description }}
     </div>
 
-    <div class="repo__other" style="margin-top: 0.5em">
-      <span v-if="rep.language" class="repo__lang">{{ rep.language }}</span>
+    <div class="repo__other">
+      <span v-if="rep.language" class="repo__lang">
+        <span :style='{"background-color": color}' class="repo__lang__circle"/>
+        {{ rep.language }}
+      </span>
     </div>
 
   </div>
@@ -30,7 +33,12 @@
 <script>
 export default {
   name: 'repo',
-  props: ['rep'],
+  props: ['rep', 'colors'],
+  computed: {
+    color() {
+      return this.colors[this.rep.language].color;
+    },
+  },
   methods: {
     goto(rep) { console.log(rep); },
   },
@@ -45,6 +53,8 @@ export default {
     line-height: 1.5em;
     max-width: 420px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .repo:hover {
@@ -55,7 +65,6 @@ export default {
   .repo__name {
     font-family: 'Roboto Mono', monospace;
     font-weight: 500;
-    /*color: #1976d2;*/
     color: #5C6BC0;
   }
 
@@ -65,10 +74,25 @@ export default {
 
   .repo__desc {
     color: gray;
+    margin-bottom: 0.5em;
   }
 
   .repo__lang {
     color: #9e9e9e;
     font-size: 0.9em;
+  }
+
+  .repo__lang__circle {
+    display:inline-block;
+    width:1em;
+    height:1em;
+    border-radius:50%;
+    position: relative;
+    top: 0.14em;
+    margin-right:0.1em;
+  }
+
+  .repo__other {
+    margin-top: auto;
   }
 </style>

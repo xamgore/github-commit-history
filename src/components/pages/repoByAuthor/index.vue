@@ -1,7 +1,8 @@
 <template>
   <div class="page page__by-author">
 
-    <input type="text" class="search-author" placeholder="nickname…" @input="setAuthor">
+    <input type="text" class="search-author" placeholder="nickname"
+      @input="setAuthor" value="github" autofocus>
 
     <repositories :repos="repos" :err="error"/>
 
@@ -16,7 +17,7 @@ export default {
   name: 'page-by-author',
   components: { repositories },
   data: () => ({
-    author: '',
+    author: 'github',
     error: '',
   }),
   methods: {
@@ -27,7 +28,7 @@ export default {
   asyncComputed: {
 
     repos: {
-      default: [],
+      default: null,
       get() {
         this.error = '';
         if (!this.author) return null;
@@ -56,6 +57,7 @@ export default {
     max-width: 440px;
     margin: 1em auto 2em;
     padding: 0.3em;
+    box-sizing: content-box;
     line-height: 1.5em;
     font-size: 1.2em;
     font-family: 'Roboto Mono'

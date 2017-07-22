@@ -6,7 +6,7 @@
     </div>
 
     <div v-else class="repositories">
-      <repo v-for="rep in sorted" :rep="rep" :key="rep.id"/>
+      <repo v-for="rep in repos" :rep="rep" :key="rep.id" :colors="colors"/>
     </div>
 
     <!-- TODO: pagination -->
@@ -20,18 +20,23 @@ import repo from './repo';
 export default {
   name: 'repositories',
   props: ['repos', 'err'],
+  data: () => ({ colors: {} }),
   components: { repo },
   computed: {
     sorted() {
       return this.repos.slice(0).sort((y, x) =>
-      x.stargazers_count - y.stargazers_count ||
-      x.watchers_count - y.watchers_count ||
-      x.pushed_at.localeCompare(y.pushed_at));
+        x.stargazers_count - y.stargazers_count ||
+        x.watchers_count - y.watchers_count ||
+        x.pushed_at.localeCompare(y.pushed_at));
     },
     message() {
       return this.err ||
         (this.repos && !this.repos.length && 'There are no repositories, sorry');
     },
+  },
+  created() {
+    this.axios.get('https://raw.githubusercontent.com/ozh/github-colors/master/colors.json')
+      .then((res) => { this.colors = res.data; });
   },
 };
 </script>
@@ -45,11 +50,22 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-right: -1em;
+    justify-content: center;
+    padding-left: 1em;
   }
 
   .repo {
     margin-right: 1em;
     box-sizing: content-box;
+  }
+
+  @media screen and (max-width:420px) {
+    .repositories {
+      /*margin-right: 0;*/
+    }
+
+    .repo {
+      /*margin: 1em;*/
+    }
   }
 </style>
