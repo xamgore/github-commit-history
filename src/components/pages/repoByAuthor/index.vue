@@ -55,7 +55,7 @@ export default {
       this.axios.get(url)
         .then((res) => {
           this.repos = (this.repos || []).concat(res.data);
-          const status = (res.data.length && 'loaded') || 'complete';
+          const status = (res.data.length === 30 && 'loaded') || 'complete';
           this.$refs.infiniteLoading.$emit(`$InfiniteLoading:${status}`);
         })
         .catch((err) => {
