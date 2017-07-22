@@ -1,5 +1,5 @@
 <template>
-  <div class="repo" @click="goto(rep.name)">
+  <router-link append :to="{path:rep.name}" tag="div" class="repo">
 
     <div class="repo__title">
       <span class="repo__name">
@@ -27,7 +27,7 @@
       </span>
     </div>
 
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -35,12 +35,7 @@ export default {
   name: 'repo',
   props: ['rep', 'colors'],
   computed: {
-    color() {
-      return (this.colors[this.rep.language] || {}).color;
-    },
-  },
-  methods: {
-    goto(rep) { console.log(rep); },
+    color() { return (this.colors[this.rep.language] || {}).color; },
   },
 };
 </script>
