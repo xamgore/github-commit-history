@@ -2,8 +2,7 @@
   <div class="page page__by-author">
 
     <input type="text" class="search-author" placeholder="nickname"
-      @input="setAuthor" value="github" autofocus>
-
+      @input="setAuthor" :value="nickname" autofocus>
     <repositories :repos="repos" :err="error"/>
 
     <infinite-loading v-show="author" :on-infinite="fetchMoreRepos" ref="infiniteLoading" :distance="400">
@@ -22,15 +21,17 @@ import repositories from './repositories';
 export default {
   name: 'page-by-author',
   components: { repositories, infiniteLoading },
+  props: ['nickname'],
   data: () => ({
-    author: 'github',
     error: '',
+    author: '',
     page: 0,
     repos: null,
   }),
   methods: {
     setAuthor: debounce(function (e) {
       this.author = e.target.value.trim();
+      this.$router.push({ name: 'byAuthor', params: { nickname: this.author } });
 
       // fetchMoreRepos will be called automatically
       this.page = 0;
