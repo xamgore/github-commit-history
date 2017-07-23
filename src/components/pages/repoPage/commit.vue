@@ -1,7 +1,7 @@
 <template>
   <div class="commit">
 
-    <router-link :to="{ name: 'byAuthor', params: { author: cm.author.login }}" class="commit__avatar__link">
+    <router-link :to="{ name: 'byAuthor', params: { author }}" class="commit__avatar__link">
       <img :src="avatar" alt="avatar" class="commit__avatar">
     </router-link>
 
@@ -13,8 +13,8 @@
       </div>
 
       <div class="commit__meta">
-        <router-link v-text="cm.author.login" :title="view" class="commit__author"
-          :to="{ query: { author: cm.author.login } }"/>
+        <router-link v-text="author" :title="view" class="commit__author"
+          :to="{ query: { author } }"/>
       </div>
     </div>
 
@@ -29,8 +29,16 @@ export default {
     first50letters: s => s.split('\n')[0],
   },
   computed: {
+    author() {
+      const author = this.cm.author && this.cm.author.login;
+      const commiter = this.cm.commit.author.name;
+      return author || commiter;
+    },
     avatar() {
-      return `${this.cm.author.avatar_url}&s=72`;
+      const author = this.cm.author && this.cm.author.avatar_url;
+      const commiter = this.cm.commiter && this.cm.commiter.avatar_url;
+      const ava = author || commiter;
+      return ava ? `${ava}&s=72` : '';
     },
     view() {
       return `View all commits by ${this.cm.commit.author.name}`;
@@ -67,6 +75,11 @@ export default {
 .commit__information {
   display: flex;
   flex-direction: column;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .commit__message {
@@ -74,7 +87,6 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   display: block;
-  width: 500px;
   white-space: nowrap;
 }
 

@@ -20,14 +20,18 @@ export default {
       get() {
         const clientId = 'client_id=07e0ab8ddd5a2a83cc80';
         const clientSecret = 'client_secret=c78ac83e552cf858af63a8c8cde812a2a778fd7e';
-        return this.axios.get(`https://api.github.com/repos/${this.author}/${this.repo}/branches?${clientId}&${clientSecret}`)
-          .then(res => res.data);
+        const url = `https://api.github.com/repos/${this.author}/${this.repo}/branches?${clientId}&${clientSecret}&per_page=100`;
+
+        return this.axios.get(url).then(res => res.data);
       },
     },
   },
+  watch: {
+    selected() { this.$emit('change', null); },
+  },
   created() {
     // add /master if a branch was not set
-    if (!this.branch || !this.branch.length) {
+    if (!this.selected || !this.selected.length) {
       this.$router.replace({ name: 'repo', params: { ...this.$data, branch: 'master' } });
     }
   },
@@ -41,7 +45,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 1em;
+  padding: 0 1em;
 }
 
 .branch {

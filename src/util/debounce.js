@@ -24,23 +24,23 @@ const debounce = function (func, wait, immediate) {
 // as much as it can, without ever going more than once per `wait` duration;
 // but if you'd like to disable the execution on the leading edge, pass
 // `{leading: false}`. To disable execution on the trailing edge, ditto.
-const throttle = function (func, wait, options = {}) {
-  let context;
-  let args;
-  let result;
-  let timeout = null;
-  let previous = 0;
-  const later = function () {
+function throttle(func, wait, options) {
+  var context, args, result;
+  var timeout = null;
+  var previous = 0;
+  if (!options) options = {};
+  var later = function() {
     previous = options.leading === false ? 0 : Date.now();
     timeout = null;
     result = func.apply(context, args);
     if (!timeout) context = args = null;
   };
-  return function (...args) {
-    const now = Date.now();
+  return function() {
+    var now = Date.now();
     if (!previous && options.leading === false) previous = now;
-    const remaining = wait - (now - previous);
+    var remaining = wait - (now - previous);
     context = this;
+    args = arguments;
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {
         clearTimeout(timeout);
