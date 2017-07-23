@@ -23,4 +23,13 @@ export default {
   @media screen and (max-width: 460px) {
     body { font-size: 0.7em; }
   }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 </style>

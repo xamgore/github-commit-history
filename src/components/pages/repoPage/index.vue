@@ -1,15 +1,25 @@
 <template>
   <div class="page page__repository">
 
-    <branches v-if="branches.length" :branches="branches" :selected="branch"/>
+    <div class="page__repository__title">
+      <h2 class="repository__author">
+        <router-link :to="{name: 'byAuthor', params: { author }}" v-text="author"/>
+        / {{ repo }}
+      </h2>
 
-    <div class="history">
-      <template v-for="bunch, date in groupedByDateCommits">
+    </div>
 
-        <date :date="date"/>
-        <commit v-for="cm in bunch" :key="cm.sha" :cm="cm" class="commit"/>
+    <div class="page__repository__content">
+      <branches :author="author" :repo="repo" :selected="branch"/>
 
-      </template>
+      <div class="history">
+        <template v-for="bunch, date in groupedByDateCommits">
+
+          <date :date="date"/>
+          <commit v-for="cm in bunch" :key="cm.sha" :cm="cm" class="commit"/>
+
+        </template>
+      </div>
     </div>
 
   </div>
@@ -20,7 +30,7 @@ import groupBy from 'lodash.groupby';
 import branches from './branches';
 import commit from './commit';
 import date from './date-label';
-
+// #f06292 //#c2185b
 export default {
   name: 'repo-page',
   components: { branches, commit, date },
@@ -36,14 +46,6 @@ export default {
     },
   },
   asyncComputed: {
-    branches: {
-      default: [],
-      get() {
-        return this.axios.get(`https://api.github.com/repos/${this.author}/${this.repo}/branches?client_id=07e0ab8ddd5a2a83cc80&client_secret=c78ac83e552cf858af63a8c8cde812a2a778fd7e`)
-          .then(res => res.data);
-      },
-    },
-
     commits: {
       default: [],
       get() {
@@ -54,12 +56,6 @@ export default {
       },
     },
   },
-  created() {
-    // add /master if a branch was not set
-    if (!this.branch || !this.branch.length) {
-      this.$router.replace({ name: 'repo', params: { ...this.$data, branch: 'master' } });
-    }
-  },
 };
 </script>
 
@@ -67,15 +63,33 @@ export default {
 
 .page__repository {
   padding: 2em;
+}
+
+.page__repository__title {
+  margin-left: 1em;
+  padding-bottom: 1em;
+  /*border-bottom: 2px solid #f9f9f9;*/
+  font-size: 0.9em;
+}
+
+.page__repository__content {
+  margin-top: 1em;
   display: flex;
   flex-direction: row;
 }
 
-.page__repository .branches {
+.page__repository__content .branches {
   border-right: 2px solid lightgray;
   margin-right: 1em;
   padding-right: 2.5em;
   font-size: 0.75em;
+}
+
+.repository__author {
+  font-family: 'Open Sans';
+  margin: 0;
+  padding: 0;
+  color: #444;
 }
 
 </style>
