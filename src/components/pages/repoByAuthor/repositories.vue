@@ -62,13 +62,4 @@ export default {
     text-align: center;
   }
 
-  @media screen and (max-width:420px) {
-    .repositories {
-      /*margin-right: 0;*/
-    }
-
-    .repo {
-      /*margin: 1em;*/
-    }
-  }
 </style>

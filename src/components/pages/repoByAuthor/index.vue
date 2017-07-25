@@ -2,7 +2,8 @@
   <div class="page page__by-author">
 
     <input type="text" class="search-author" placeholder="nickname"
-       @input="setAuthor" :value="author" autofocus>
+       @input="updateURL" v-model="input" autofocus>
+
     <repositories :repos="repos" :err="error"/>
 
     <infinite-loading v-show="author" :on-infinite="fetchMoreRepos" ref="infiniteLoading" :distance="400">
@@ -15,7 +16,7 @@
 
 <script>
 import infiniteLoading from 'vue-infinite-loading';
-import { debounce } from '@/util/debounce';
+import { debounce, throttle } from '@/util/debounce'; // eslint-disable-line
 import repositories from './repositories';
 
 export default {
@@ -26,22 +27,24 @@ export default {
     error: '',
     page: 0,
     repos: null,
+    input: '',
   }),
   watch: {
     author() {
       this.page = 0;
       this.repos = null;
+      this.input = this.author;
 
       // calls fetchMoreRepos
       this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
     },
   },
   methods: {
-    setAuthor: debounce(function (e) {
+    updateURL: debounce(function (e) {
       this.$router.push({ name: 'byAuthor', params: { author: e.target.value } });
-    }, 500),
+    }, 600),
 
-    fetchMoreRepos: debounce(function () {
+    fetchMoreRepos: throttle(function () {
       this.error = '';
 
       if (!this.author.length) return;
@@ -63,7 +66,7 @@ export default {
             ? 'User is not found' : 'Cannot connect to server';
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
         });
-    }, 100, true),
+    }, 300, { leading: false }),
   },
 };
 </script>
