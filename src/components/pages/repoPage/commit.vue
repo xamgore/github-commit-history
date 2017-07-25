@@ -38,7 +38,9 @@ export default {
       const author = this.cm.author && this.cm.author.avatar_url;
       const commiter = this.cm.commiter && this.cm.commiter.avatar_url;
       const ava = author || commiter;
-      return ava ? `${ava}&s=72` : '';
+
+      const transparent = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+      return ava ? `${ava}&s=72` : transparent;
     },
     view() {
       return `View all commits by ${this.cm.commit.author.name}`;
@@ -62,6 +64,7 @@ export default {
 
 .commit__avatar {
   width: 2.3em;
+  height: 2.3em;
   border-radius: 100%;
   margin-right: 0.5em;
 }

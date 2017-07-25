@@ -51,31 +51,11 @@ export default {
     per_page: 100,
     commits: {},
     pages: {},
-    filters: { search: '' },
     input: '',
   }),
 
-  watch: {
-    '$route.query': function (query) {
-      console.log(`query: ${query.q}`);
-
-      this.filters.search = query.q || '';
-      this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
-
-
-      // look at the query: if author/path/since were found, reset the state
-      if (query.q) {
-        // this.filters.author = query.q;
-
-        // this.pages = {};
-        // this.commits = {};
-      }
-    },
-  },
-
   methods: {
     changeURL: throttle(function (e) {
-      console.log('changeURL');
       const query = e.target.value ? { q: e.target.value } : {};
       this.$router.push({ query });
     }, 50, { leading: false }),
@@ -88,27 +68,46 @@ export default {
 
       const clientId = 'client_id=07e0ab8ddd5a2a83cc80';
       const clientSecret = 'client_secret=c78ac83e552cf858af63a8c8cde812a2a778fd7e';
-      const filter = Object.entries(this.filters).map(([k, v]) => `&${k}=${v}`).join('');
+      const filter = Object.entries(this.params).map(([k, v]) => `&${k}=${v}`).join('');
       const url = `https://api.github.com/repos/${this.author}/${this.repo}/commits?page=${page}&per_page=${this.per_page}&sha=${this.branch}&${clientId}&${clientSecret}${filter}`;
 
       this.axios.get(url).then((res) => {
         this.$set(this.commits, this.branch, (this.commits[this.branch] || []).concat(res.data));
         const status = (res.data.length === this.per_page && 'loaded') || 'complete';
         this.$refs.infiniteLoading.$emit(`$InfiniteLoading:${status}`);
-        console.log(status);
       });
     }, 200, { leading: false }),
   },
 
   computed: {
+    params() {
+      const q = this.$route.query.q || '';
+      const params = { search: '' };
+
+      // if (q) {
+      const regexp = /(author|path):[^:\s]+/g;
+
+      const filters = (q.match(regexp) || []).map(p => p.split(':'));
+      if (filters) { this.pages = {}; this.commits = {}; }
+      filters.forEach((p) => { params[p[0]] = p[1]; });
+
+      params.search = q.replace(regexp, '').trim();
+      // }
+
+      this.$nextTick(() => this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset'));
+      return params;
+    },
+
     // add pause?
     groupedCommits() {
-      const search = this.filters.search;
+      const search = this.params.search;
+      console.log(search);
 
       let commits = this.commits[this.branch];
-      if (search !== '') {
+
+      if (search !== '' && commits) {
         const s = new jsSearch.Search('sha');
-        s.addIndex(['commit', 'commiter', 'date']);
+        // s.addIndex(['commit', 'commiter', 'date']);
         s.addIndex(['commit', 'message']);
         s.addDocuments(commits);
         commits = s.search(search);
