@@ -18,7 +18,7 @@
 
 <script>
 import infiniteLoading from 'vue-infinite-loading';
-import { debounce, throttle } from '@/util/debounce';
+import { debounce, throttle } from '@/util';
 import repositories from './repositories';
 
 export default {

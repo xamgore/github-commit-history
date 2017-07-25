@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import repoPage from '@/components/pages/repoPage';
-import repoByAuthor from '@/components/pages/repoByAuthor';
+import repoPage from '@/components/pages/history';
+import repoByAuthor from '@/components/pages/profile';
 
 Vue.use(Router);
 

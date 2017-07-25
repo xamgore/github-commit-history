@@ -33,7 +33,7 @@
 
 <script>
 import infiniteLoading from 'vue-infinite-loading';
-import { debounce, throttle } from '@/util/debounce';
+import { debounce, throttle } from '@/util';
 import groupBy from 'lodash.groupby';
 import branches from './branches';
 import commit from './commit';
