@@ -14,7 +14,8 @@
 
       <div class="commit__meta">
         <router-link v-text="author" :title="view" class="commit__author"
-          :to="{ query: { author } }"/>
+          :to="{ query: { q: `author:${author}` } }"/>
+        <!-- FIXME "Vladimir Evseev" issue -->
       </div>
     </div>
 
