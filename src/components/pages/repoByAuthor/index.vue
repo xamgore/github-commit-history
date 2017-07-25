@@ -24,7 +24,7 @@ import repositories from './repositories';
 export default {
   name: 'page-by-author',
   components: { repositories, infiniteLoading },
-  props: ['author'],
+  props: { author: { default: '' } },
   data: () => ({
     error: '',
     page: 0,
@@ -32,19 +32,24 @@ export default {
     input: '',
   }),
   watch: {
-    author() {
-      this.page = 0;
-      this.repos = null;
-      this.input = this.author;
-
-      // calls fetchMoreRepos
-      this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
-    },
+    $route() { this.resetState(); },
+  },
+  created() {
+    this.resetState();
   },
   methods: {
     updateURL: debounce(function (e) {
       this.$router.push({ name: 'byAuthor', params: { author: e.target.value } });
     }, 600),
+
+    resetState() {
+      this.page = 0;
+      this.repos = null;
+      this.input = this.author;
+
+      // calls fetchMoreRepos
+      this.$nextTick(() => this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset'));
+    },
 
     fetchMoreRepos: throttle(function () {
       this.error = '';
