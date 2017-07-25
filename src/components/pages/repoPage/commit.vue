@@ -118,4 +118,11 @@ export default {
   cursor: pointer;
 }
 
+@media screen and (max-width: 768px) {
+  .commit { margin: 0 -0.3em; }
+  .commit__message, .commit__information {
+    white-space: inherit;
+  }
+}
+
 </style>

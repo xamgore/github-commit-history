@@ -45,6 +45,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  flex-wrap: wrap;
   padding: 0 1em;
 }
 
@@ -66,6 +67,16 @@ export default {
 
 .branch:not(.branch--selected):hover {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .branches {
+    flex-direction: row;
+    border-right: none;
+    margin-bottom: 3em;
+  }
+
+  .branch { margin: 0.5em 0.5em 0 0; }
 }
 
 </style>

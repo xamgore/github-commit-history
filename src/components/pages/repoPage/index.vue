@@ -164,7 +164,17 @@ export default {
 }
 
 .history {
-  width: 480px;
+  max-width: 480px;
+}
+
+@media screen and (max-width: 768px) {
+  .page__repository { padding: 1em }
+  .page__repository__title { padding-bottom: 0 }
+  .page__repository__content { flex-direction: column }
+  .page__repository__content .branches {
+    border-right: 0;
+    margin-bottom: 3em;
+  }
 }
 
 </style>
