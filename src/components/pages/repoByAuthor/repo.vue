@@ -1,5 +1,5 @@
 <template>
-  <router-link append :to="{path:rep.name}" tag="div" class="repo">
+  <router-link append :to="{path:rep.name, branch:rep.default_branch}" tag="div" class="repo">
 
     <div class="repo__title">
       <span class="repo__name">
