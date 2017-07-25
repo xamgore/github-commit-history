@@ -1,8 +1,10 @@
 <template>
   <div class="page page__by-author">
 
-    <input type="text" class="search-author" placeholder="nickname"
-       @input="updateURL" v-model="input" autofocus>
+    <div class="search-wrapper">
+      <input type="text" class="search-author" placeholder="nickname"
+         @input="updateURL" v-model="input" autofocus>
+     </div>
 
     <repositories :repos="repos" :err="error"/>
 
@@ -75,16 +77,26 @@ export default {
   .page__by-author {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   .search-author {
     width: 100%;
-    max-width: 440px;
-    margin: 2em auto 2em;
+    max-width: calc(415px + 2em);
     padding: 0.3em;
-    box-sizing: content-box;
     line-height: 1.5em;
     font-size: 1.2em;
     font-family: 'Roboto Mono'
+  }
+
+  @media screen and (min-width: 460px) {
+    .search-author { margin: 2em 0 }
+  }
+
+  .search-wrapper {
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 </style>

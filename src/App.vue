@@ -21,7 +21,7 @@ export default {
   }
 
   @media screen and (max-width: 460px) {
-    body { font-size: 0.7em; }
+    body { font-size: 0.78em; }
   }
 
   a {
