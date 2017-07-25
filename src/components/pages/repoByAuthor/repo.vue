@@ -6,12 +6,8 @@
         {{ rep.name }}
 
         <span v-if="rep.stargazers_count" class="repo__stars">
-          ⭐{{ rep.stargazers_count }}
+          {{ rep.stargazers_count }}
         </span>
-
-        <!-- <span v-if="rep.watchers_count" class="repo__watchers">
-          👀{{ rep.watchers_count }}
-        </span> -->
       </span>
     </div>
 
@@ -67,8 +63,13 @@ export default {
     color: #5C6BC0;
   }
 
-  .repo__stars, .repo__watchers {
+  .repo__stars {
     color: #555;
+    padding-left: 1.2em;
+    background: url('https://www.webpagefx.com/tools/emoji-cheat-sheet/graphics/emojis/star.png');
+    background-repeat: no-repeat;
+    background-size: 1em;
+    background-position: 0 35%;
   }
 
   .repo__desc {
