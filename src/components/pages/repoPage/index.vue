@@ -72,6 +72,7 @@ export default {
 
     fetchCommits: throttle(function () {
       if (!this.branch) return;
+      this.error = '';
 
       const page = (this.pages[this.branch] || 0) + 1;
       this.$set(this.pages, this.branch, page);
@@ -85,7 +86,8 @@ export default {
         this.$set(this.commits, this.branch, (this.commits[this.branch] || []).concat(res.data));
         const status = (res.data.length === this.per_page && 'loaded') || 'complete';
         this.$refs.infiniteLoading.$emit(`$InfiniteLoading:${status}`);
-      });
+      })
+      .catch(() => this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete'));
     }, 300, { leading: false }),
   },
 
