@@ -40,8 +40,8 @@ export default {
       const commiter = this.cm.commiter && this.cm.commiter.avatar_url;
       const ava = author || commiter;
 
-      const transparent = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-      return ava ? `${ava}&s=72` : transparent;
+      const octocat = 'https://i2.wp.com/assets-cdn.github.com/images/gravatars/gravatar-user-420.png?ssl=1';
+      return ava ? `${ava}&s=72` : octocat;
     },
     view() {
       return `View all commits by ${this.cm.commit.author.name}`;
