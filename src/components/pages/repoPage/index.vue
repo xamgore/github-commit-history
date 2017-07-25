@@ -151,8 +151,10 @@ export default {
 .page__repository__content .branches {
   border-right: 2px solid lightgray;
   margin-right: 1em;
-  padding-right: 2.5em;
+  padding-right: 1.5em;
   font-size: 0.75em;
+  line-height: 1.25em;
+  max-width: 230px;
 }
 
 .repository__author {
@@ -184,6 +186,7 @@ export default {
     margin-bottom: 3em;
     padding-right: 0;
     margin-right: 0;
+    max-width: inherit;
   }
 }
 
