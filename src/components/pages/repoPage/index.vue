@@ -100,7 +100,7 @@ export default {
       params.search = q.replace(regexp, '').trim();
 
       const filters = (q.match(regexp) || []).map(p => p.split(':'));
-      if (filters) { this.pages = {}; this.commits = {}; }
+      if (filters.length) { this.pages = {}; this.commits = {}; }
       filters.forEach((p) => { params[p[0]] = p[1]; });
 
       // calls fetchCommits()
