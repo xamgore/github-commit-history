@@ -18,7 +18,7 @@
 
 <script>
 import infiniteLoading from 'vue-infinite-loading';
-import { debounce, throttle } from '@/util/debounce'; // eslint-disable-line
+import { debounce, throttle } from '@/util/debounce';
 import repositories from './repositories';
 
 export default {
@@ -32,7 +32,7 @@ export default {
     input: '',
   }),
   watch: {
-    $route() { this.resetState(); },
+    author() { this.resetState(); },
   },
   created() {
     this.resetState();

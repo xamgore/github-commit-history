@@ -13,7 +13,7 @@
         @change="$refs.infiniteLoading.$emit('$InfiniteLoading:reset')"/>
 
       <div class="history">
-        <input :value="$route.query.q" @input="changeURL" type="text" class="search"
+        <input v-model="input" @input="updateURL" type="text" class="search"
           placeholder="Add scrolling  author:xamgore path:app" autofocus>
 
         <template v-for="bunch, date in groupedCommits">
@@ -33,7 +33,7 @@
 
 <script>
 import infiniteLoading from 'vue-infinite-loading';
-import { throttle } from '@/util/debounce';
+import { debounce, throttle } from '@/util/debounce';
 import groupBy from 'lodash.groupby';
 import branches from './branches';
 import commit from './commit';
@@ -54,11 +54,21 @@ export default {
     input: '',
   }),
 
+  watch: {
+    '$route.query.q': function () {
+      this.input = this.$route.query.q || '';
+    },
+  },
+
+  created() {
+    this.input = this.$route.query.q || '';
+  },
+
   methods: {
-    changeURL: throttle(function (e) {
+    updateURL: debounce(function (e) {
       const query = e.target.value ? { q: e.target.value } : {};
       this.$router.push({ query });
-    }, 50, { leading: false }),
+    }, 600),
 
     fetchCommits: throttle(function () {
       if (!this.branch) return;
@@ -76,7 +86,7 @@ export default {
         const status = (res.data.length === this.per_page && 'loaded') || 'complete';
         this.$refs.infiniteLoading.$emit(`$InfiniteLoading:${status}`);
       });
-    }, 200, { leading: false }),
+    }, 300, { leading: false }),
   },
 
   computed: {
@@ -84,33 +94,28 @@ export default {
       const q = this.$route.query.q || '';
       const params = { search: '' };
 
-      // if (q) {
       const regexp = /(author|path):[^:\s]+/g;
+      params.search = q.replace(regexp, '').trim();
 
       const filters = (q.match(regexp) || []).map(p => p.split(':'));
       if (filters) { this.pages = {}; this.commits = {}; }
       filters.forEach((p) => { params[p[0]] = p[1]; });
 
-      params.search = q.replace(regexp, '').trim();
-      // }
-
+      // calls fetchCommits()
       this.$nextTick(() => this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset'));
       return params;
     },
 
-    // add pause?
     groupedCommits() {
       const search = this.params.search;
-      console.log(search);
-
-      let commits = this.commits[this.branch];
+      let commits = this.commits[this.branch] || [];
 
       if (search !== '' && commits) {
         const s = new jsSearch.Search('sha');
-        // s.addIndex(['commit', 'commiter', 'date']);
         s.addIndex(['commit', 'message']);
         s.addDocuments(commits);
         commits = s.search(search);
+        commits.sort((x, y) => y.commit.author.date.localeCompare(x.commit.author.date));
       }
 
       return groupBy(commits, (cm) => {
@@ -165,6 +170,7 @@ export default {
 
 .history {
   max-width: 480px;
+  width: 100%;
 }
 
 @media screen and (max-width: 768px) {
@@ -174,6 +180,8 @@ export default {
   .page__repository__content .branches {
     border-right: 0;
     margin-bottom: 3em;
+    padding-right: 0;
+    margin-right: 0;
   }
 }
 
