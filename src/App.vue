@@ -32,4 +32,10 @@ export default {
   a:hover {
     text-decoration: underline;
   }
+
+  input {
+    background: white;
+    border: solid 1px #c9c9c9;
+    border-radius: 0;
+  }
 </style>
