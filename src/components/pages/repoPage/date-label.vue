@@ -25,6 +25,8 @@ export default {
 
       if (days < 1) {
         phraze = 'today';
+      } else if (days < 2) {
+        phraze = 'yesterday';
       } else if (days < 7) {
         phraze = `${Math.floor(days)} days ago`;
       } else {
